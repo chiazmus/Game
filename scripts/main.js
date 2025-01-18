@@ -1,10 +1,35 @@
+/* 
+New Buttons to implement later:
+
+--Vampire--
+Vampire button, which spawns when a wizard button is infected by a zombie button.
+When clicked it tries to create three more zombie buttons.
+When a Vampire button is present, a wizard button will create 3 normal buttons, if clicked and will kill the vampire button.
+Will starve if there are no normal buttons left.
+It is worth 5 points.
+
+--Unicorn--
+A Unicorn button is the rarest one, and when clicked will disappear.  It is worth 50 points.
+
+--Kraken--
+Kraken button, which spawns when a dragon button is infected by a zombie button.  It will eat up to 3 random buttons when clicked,
+and will attack other Krakens if there are no other button types left.
+A dragon button will attack the kraken if clicked, killing it.
+Will starve if there are no buttons left to eat.
+It is worth 7 points.
+
+*/
+
+
+
 // Define probabilities for each button type
 const typesOfButtons = {
     "normal": 0.5,
     "wizard": 0.1,
     "dragon": 0.05,
     "zombie": 0.05,
-    "ninja": 0.005
+    "ninja": 0.005,
+    "unicorn":0.001
 };
 
 // Map button names to their types
@@ -13,7 +38,8 @@ const buttonNames = {
     'Wizard Button 🧙‍♂️': "wizard",
     "Dragon Button 🐉": "dragon",
     "Zombie Button 🧟": "zombie",
-    "Ninja Button 🥷": "ninja"
+    "Ninja Button 🥷": "ninja",
+    "Unicorn Button 🦄":"unicorn"
 };
 
 // Define points for each button type
@@ -21,8 +47,9 @@ const buttonTypePoints = {
     "normal": 1,
     "wizard": 3,
     "dragon": 7,
-    "zombie": -1,
-    "ninja": 9
+    "zombie": 1,
+    "ninja": 9,
+    "unicorn":20
 };
 
 // Set the maximum number of buttons allowed
@@ -64,6 +91,9 @@ function changeButton() {
                 break;
             case "zombie":
                 makeZombieButton();
+                break;
+            case "unicorn":
+                makeUnicornButton();
                 break;
         }
     }
@@ -120,6 +150,29 @@ function makeButton() {
     main.appendChild(button);
     writeToScreen("You made another button appear!");
     countButtonPoints();
+}
+
+function makeUnicornButton(){
+    let main = document.querySelector('main');
+    let button = document.createElement('button');
+    button.textContent = 'Unicorn Button 🦄';
+    button.onclick = unicornAction;
+    main.appendChild(button);
+    writeToScreen("A rare unicorn button appears!");
+    countButtonPoints();    
+}
+
+function unicornAction(){
+    let main = document.querySelector('main');
+    let buttons = main.querySelectorAll('button');
+
+    for (let i = 0; i < buttons.length; i++){
+        if (buttons[i].textContent == 'Unicorn Button 🦄'){
+            writeToScreen('The unicorn button runs away!')
+            main.removeChild(buttons[i])
+            return;
+        }
+    }    
 }
 
 function makeZombieButton(){
