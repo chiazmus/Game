@@ -27,4 +27,5 @@ button {
     border-radius: 10px;
     font-size: 20px;
     padding: 15px 30px;
+    user-select: none;
 }

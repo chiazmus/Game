@@ -1,201 +1,286 @@
-const types_of_buttons = {
+// Define probabilities for each button type
+const typesOfButtons = {
     "normal": 0.5,
     "wizard": 0.1,
     "dragon": 0.05,
-    "ninja":0.005
+    "zombie": 0.05,
+    "ninja": 0.005
 };
 
+// Map button names to their types
 const buttonNames = {
-    'Button :)':"normal",
-    'Wizard Button 🧙‍♂️':"wizard",
-    "Dragon Button 🐉":"dragon",
-    "Ninja Button 🥷":"ninja"
+    'Button :)': "normal",
+    'Wizard Button 🧙‍♂️': "wizard",
+    "Dragon Button 🐉": "dragon",
+    "Zombie Button 🧟": "zombie",
+    "Ninja Button 🥷": "ninja"
 };
 
+// Define points for each button type
 const buttonTypePoints = {
-    "normal":1,
-    "wizard":3,
-    "dragon":7,
-    "ninja":9
+    "normal": 1,
+    "wizard": 3,
+    "dragon": 7,
+    "zombie": -1,
+    "ninja": 9
 };
 
-var max_buttons = 45;
+// Set the maximum number of buttons allowed
+let maxButtons = 45;
+let zombies = false;
 
-function change_button() {
-    var myprobability = Math.random();
-    var cumulativeProbability = 0;
-    var mybutton = "normal";  // Default button type
+// Function to randomly change the button type
+function changeButton() {
+    let probability = Math.random();
+    let cumulativeProbability = 0;
+    let selectedButton = "normal"; // Default button type
 
-    // Calculate cumulative probability and determine button type
-    for (let key in types_of_buttons) {
-        cumulativeProbability += types_of_buttons[key];
-        if (myprobability <= cumulativeProbability) {
-            mybutton = key;
+    // Determine button type based on cumulative probability
+    for (let key in typesOfButtons) {
+        cumulativeProbability += typesOfButtons[key];
+        if (probability <= cumulativeProbability) {
+            selectedButton = key;
             break;
         }
     }
 
     // Create the appropriate button based on the selected type
-    switch (mybutton) {
-        case "normal":
-            make_button();
-            break;
-        case "wizard":
-            make_wizard_button();
-            break;
-        case "dragon":
-            make_dragon_button();
-            break;
-        case "ninja":
-            make_ninja_button();
-            break;
+    if (zombies){
+        makeZombieButton();
     }
-
+    else{
+        switch (selectedButton) {
+            case "normal":
+                makeButton();
+                break;
+            case "wizard":
+                makeWizardButton();
+                break;
+            case "dragon":
+                makeDragonButton();
+                break;
+            case "ninja":
+                makeNinjaButton();
+                break;
+            case "zombie":
+                makeZombieButton();
+                break;
+        }
+    }
 }
 
+// Function to check and limit the number of buttons
 function checkButtonPopulation() {
     let main = document.querySelector('main');
     let buttons = main.querySelectorAll('button');
-  
-    while (buttons.length > max_buttons) {
-      writeToScreen("One of your buttons died of overpopulation."); 
-      // Remove the first button from the DOM
-      main.removeChild(buttons[0]); 
-  
-      // Update the 'buttons' collection after removal
-      buttons = main.querySelectorAll('button'); 
-    }
-  }
 
-function countButtonPoints(){
-    let points = 0
+    while (buttons.length > maxButtons) {
+        writeToScreen("One of your buttons died of overpopulation.");
+        // Remove the first button from the DOM
+        main.removeChild(buttons[0]);
+
+        // Update the button list after removal
+        buttons = main.querySelectorAll('button');
+    }
+}
+
+// Function to count and display total button points
+function countButtonPoints() {
+    let points = 0;
     let main = document.querySelector('main');
     let buttons = main.querySelectorAll('button');
-    for (let i = 0; i < buttons.length; i++){
+
+    // Calculate total points
+    zombies = false;
+    for (let i = 0; i < buttons.length; i++) {
         points += buttonTypePoints[buttonNames[buttons[i].textContent]];
-    }    
+        if (buttons[i].textContent == 'Zombie Button 🧟'){
+            zombies = true;
+        }
+    }
+
+    // Update the displayed points
     let headerHeader = document.querySelector('h2');
     headerHeader.textContent = "You have " + points + " button points.";
-    checkButtonPopulation()
+    checkButtonPopulation();
 }
 
-function writeToScreen(x){
+// Function to update the screen with a message
+function writeToScreen(message) {
     let textOutput = document.querySelector('p');
-    textOutput.textContent = x;
+    textOutput.textContent = message;
 }
 
-function make_button() {
+// Function to create a normal button
+function makeButton() {
     let main = document.querySelector('main');
     let button = document.createElement('button');
     button.textContent = 'Button :)';
-    button.onclick = change_button;
-    main.appendChild(button);    
+    button.onclick = changeButton;
+    main.appendChild(button);
     writeToScreen("You made another button appear!");
     countButtonPoints();
 }
 
-function make_ninja_button() {
+function makeZombieButton(){
+    let main = document.querySelector('main');
+    let buttons = main.querySelectorAll('button');
+
+    for (let i = 0; i < buttons.length; i++){
+        if (buttons[i].textContent != 'Zombie Button 🧟'){
+            main.removeChild(buttons[i]);
+            let button = document.createElement('button');
+            button.textContent = 'Zombie Button 🧟';
+            button.onclick = makeZombieButton;
+            main.appendChild(button);
+            writeToScreen("A button becomes infected and turns into a zombie button!");
+            return;
+        }
+    }
+    if (buttons.length > 1){
+        main.removeChild(buttons[0]);
+        writeToScreen('One zombie button eats another zombie button!');
+    } else {
+        main.removeChild(buttons[0]);
+        writeToScreen('The last zombie button dies of starvation, and a new button appears!')
+        let button = document.createElement('button');
+        button.textContent = 'Button :)';
+        button.onclick = changeButton;
+        main.appendChild(button);
+        countButtonPoints();
+    }
+}
+
+// Function to create a ninja button
+function makeNinjaButton() {
     let main = document.querySelector('main');
     let button = document.createElement('button');
     button.textContent = 'Ninja Button 🥷';
-    button.onclick = change_button;
-    main.appendChild(button);    
+    button.onclick = ninjaAction;
+    main.appendChild(button);
     writeToScreen("A ninja button appears!");
     countButtonPoints();
 }
 
-function make_wizard_button() {
+function ninjaAction(){
+    let main = document.querySelector('main');
+    let buttons = main.querySelectorAll('button');
+    for (let i = 0; i < buttons.length; i++){
+        if (buttons[i].textContent == 'Zombie Button 🧟'){
+            main.removeChild(buttons[i]);
+            writeToScreen('A ninja button kills a zombie button!');
+            return;
+        }
+    }    
+
+    changeButton();
+}
+
+// Function to create or transform into a wizard button
+function makeWizardButton() {
     let main = document.querySelector('main');
 
-    //A normal Button will become a Wizard Button
-
+    // A normal button transforms into a wizard button
     let buttons = main.querySelectorAll('button');
-    let button_removed = false;
-    let dragon_nearby = false;
+    let buttonRemoved = false;
+    let dragonNearby = false;
     let dragon;
-    if (buttons.length > 0){
-        for (let i = 0; i < buttons.length; i++){
-            if (buttons[i].textContent == "Button :)"){
-                buttons[i].parentNode.removeChild(buttons[i])
-                button_removed = true;
+    let wizards = [];
+
+    if (buttons.length > 0) {
+        for (let i = 0; i < buttons.length; i++) {
+            if (buttons[i].textContent == "Button :)") {
+                buttons[i].parentNode.removeChild(buttons[i]);
+                buttonRemoved = true;
                 break;
             }
-            if (buttons[i].textContent == "Dragon Button 🐉"){
-                dragon_nearby = true;
+            if (buttons[i].textContent == "Dragon Button 🐉") {
+                dragonNearby = true;
                 dragon = buttons[i];
+            }
+            if (buttons[i].textContent == "Wizard Button 🧙‍♂️") {
+                wizards.push(buttons[i]);
             }
         }
     }
 
-    if (button_removed){
-    writeToScreen("A button magically transforms into a Wizard Button!")
-    let button = document.createElement('button');
-    button.textContent = 'Wizard Button 🧙‍♂️';
-    button.onclick = make_wizard_button;
-    main.appendChild(button);  
-    countButtonPoints();
-    }
-    else if (dragon_nearby){
-        buttons[0].parentNode.removeChild(dragon);
+    if (buttonRemoved) {
+        writeToScreen("A button magically transforms into a Wizard Button!");
+        let button = document.createElement('button');
+        button.textContent = 'Wizard Button 🧙‍♂️';
+        button.onclick = makeWizardButton;
+        main.appendChild(button);
+        countButtonPoints();
+    } else if (dragonNearby) {
+        main.removeChild(dragon);
         writeToScreen("A wizard button casts a spell upon one of the dragon buttons and makes it disappear!");
         countButtonPoints();
+    } else if (wizards.length >= 2) {
+        main.removeChild(wizards[0]);
+        writeToScreen("Two wizard buttons get into a wizard duel and one perishes!");
+        countButtonPoints();
+    } else {
+        makeButton();
     }
-    else {
-        make_button();
-    }  
 }
 
-function make_dragon_button() {
+// Function to create a dragon button
+function makeDragonButton() {
     let main = document.querySelector('main');
 
-    //Dragon Buttons will eat two wizard buttons or 3 normal buttons if it can't, it will die and a normal button will take its place
+    // Dragon buttons eat either two wizard buttons or three normal buttons
     let buttons = main.querySelectorAll('button');
     let wizardButtons = [];
     let normalButtons = [];
     let dragonButtons = [];
+    let zombieButtons = [];
     let survived = false;
 
-    if (buttons.length > 0){
-        for (let i = 0; i < buttons.length; i++){
-            if (buttons[i].textContent == "Button :)"){
+    if (buttons.length > 0) {
+        for (let i = 0; i < buttons.length; i++) {
+            if (buttons[i].textContent == "Button :)") {
                 normalButtons.push(buttons[i]);
-            }
-            else if (buttons[i].textContent == "Wizard Button 🧙‍♂️"){
+            } else if (buttons[i].textContent == "Wizard Button 🧙‍♂️") {
                 wizardButtons.push(buttons[i]);
-            }
-            else if (buttons[i].textContent == 'Dragon Button 🐉'){
-                dragonButtons.push(buttons[i])
+            } else if (buttons[i].textContent == 'Dragon Button 🐉') {
+                dragonButtons.push(buttons[i]);
+            } else if (buttons[i].textContent == "Zombie Button 🧟") {
+                zombieButtons.push(buttons[i]);
             }
         }
     }
 
-    if (wizardButtons.length >= 2){
-        buttons[0].parentNode.removeChild(wizardButtons.pop());
-        buttons[0].parentNode.removeChild(wizardButtons.pop());
+    if (wizardButtons.length >= 2) {
+        main.removeChild(wizardButtons.pop());
+        main.removeChild(wizardButtons.pop());
         writeToScreen("A dragon button appears and eats two wizard buttons!");
         survived = true;
-    }
-    else if(normalButtons.length >= 3){
-        buttons[0].parentNode.removeChild(normalButtons.pop());
-        buttons[0].parentNode.removeChild(normalButtons.pop());
-        buttons[0].parentNode.removeChild(normalButtons.pop());
+    } else if (normalButtons.length >= 3) {
+        main.removeChild(normalButtons.pop());
+        main.removeChild(normalButtons.pop());
+        main.removeChild(normalButtons.pop());
         writeToScreen("A dragon button appears and eats three buttons!");
+        survived = true;
+    } else if (zombieButtons.length >= 4) {
+        main.removeChild(zombieButtons.pop());
+        main.removeChild(zombieButtons.pop());
+        main.removeChild(zombieButtons.pop());
+        main.removeChild(zombieButtons.pop());
+        writeToScreen("A dragon button appears and eats four zombie buttons!");
         survived = true;        
     }
-    
-    if (survived){
+
+    if (survived) {
         let button = document.createElement('button');
         button.textContent = 'Dragon Button 🐉';
-        button.onclick = make_dragon_button;
-        main.appendChild(button);    
+        button.onclick = makeDragonButton;
+        main.appendChild(button);
         countButtonPoints();
-    }
-    else if (dragonButtons.length <= 1){
-        make_button()
-    }
-    else {
-        buttons[0].parentNode.removeChild(dragonButtons.pop());
-        writeToScreen("Two of the dragon buttons fight each other and one is killed!");
+    } else if (dragonButtons.length <= 1) {
+        makeButton();
+    } else {
+        main.removeChild(dragonButtons.pop());
+        writeToScreen("Two dragon buttons fight each other and one is killed!");
         countButtonPoints();
     }
 }
