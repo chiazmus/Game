@@ -19,6 +19,8 @@ const buttonTypePoints = {
     "ninja":9
 };
 
+var max_buttons = 30;
+
 function change_button() {
     var myprobability = Math.random();
     var cumulativeProbability = 0;
@@ -51,6 +53,20 @@ function change_button() {
 
 }
 
+function checkButtonPopulation() {
+    let main = document.querySelector('main');
+    let buttons = main.querySelectorAll('button');
+  
+    while (buttons.length > max_buttons) {
+      writeToScreen("One of your buttons died of overpopulation."); 
+      // Remove the first button from the DOM
+      main.removeChild(buttons[0]); 
+  
+      // Update the 'buttons' collection after removal
+      buttons = main.querySelectorAll('button'); 
+    }
+  }
+
 function countButtonPoints(){
     let points = 0
     let main = document.querySelector('main');
@@ -60,6 +76,7 @@ function countButtonPoints(){
     }    
     let headerHeader = document.querySelector('h2');
     headerHeader.textContent = "You have " + points + " button points.";
+    checkButtonPopulation()
 }
 
 function writeToScreen(x){
