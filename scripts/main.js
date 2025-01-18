@@ -19,7 +19,7 @@ const buttonTypePoints = {
     "ninja":9
 };
 
-var max_buttons = 30;
+var max_buttons = 45;
 
 function change_button() {
     var myprobability = Math.random();
