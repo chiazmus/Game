@@ -1,0 +1,30 @@
+body {
+    background-color: antiquewhite;
+    color: black;
+}
+
+header {
+    background-color: white;
+    padding-bottom: 1px;
+    border: 1px solid black;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+main {
+    text-align: center;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-top: 15px;
+}
+
+button {
+    background-color: white;
+    color: black;
+    margin: 15px;
+    width: auto;
+    height: auto;
+    border-radius: 10px;
+    font-size: 20px;
+    padding: 15px 30px;
+}
