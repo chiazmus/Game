@@ -36,7 +36,7 @@ const typesOfButtons = {
     "normal": 0.5,
     "wizard": 0.1,
     "dragon": 0.05,
-    "zombie": 0.05,
+    "zombie": 0.01,
     "ninja": 0.005,
     "unicorn": 0.001
 };
@@ -198,6 +198,7 @@ function makeZombieButton() {
             button.onclick = makeZombieButton;
             main.appendChild(button);
             writeToScreen("A button becomes infected and turns into a zombie button!");
+            countButtonPoints();
             return;
         }
     }
@@ -205,7 +206,7 @@ function makeZombieButton() {
     if (buttons.length > 1) {
         main.removeChild(buttons[0]);
         writeToScreen('One zombie button eats another zombie button!');
-        checkButtonPopulation();
+        countButtonPoints();
     } else {
         main.removeChild(buttons[0]);
         writeToScreen('The last zombie button dies of starvation, and a new button appears!');

@@ -55,3 +55,8 @@ footer {
     padding: 10px;
     text-align: center;
 }
+
+img {
+    height: 64px;
+    width: 64px;
+}
