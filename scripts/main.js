@@ -38,7 +38,10 @@ const typesOfButtons = {
     'dragon': 0.05,
     'zombie': 0.01,
     'ninja': 0.005,
-    'unicorn': 0.001
+    'unicorn': 0.001,
+    'skeleton':0.001,
+    'ghost':0.001,
+    'vampire':0.001
 };
 
 // Map button names to their types
@@ -48,7 +51,10 @@ const buttonNames = {
     'Dragon Button 🐉': 'dragon',
     'Zombie Button 🧟': 'zombie',
     'Ninja Button 🥷': 'ninja',
-    'Unicorn Button 🦄': 'unicorn'
+    'Unicorn Button 🦄': 'unicorn',
+    'Skeleton Button 🩻':'skeleton',
+    'Ghost Button 👻':'ghost',
+    'Vampire Button 🧛':'vampire'
 };
 
 // Define points for each button type
@@ -58,7 +64,10 @@ const buttonTypePoints = {
     'dragon': 7,
     'zombie': 1,
     'ninja': 9,
-    'unicorn': 20
+    'unicorn': 20,
+    'skeleton':7,
+    'ghost':3,
+    'vampire':9
 };
 
 var allButtons = {
@@ -67,7 +76,10 @@ var allButtons = {
     'dragon':0,
     'zombie':0,
     'ninja':0,
-    'unicorn':0
+    'unicorn':0,
+    'skeleton':0,
+    'ghost':0,
+    'vampire':0
 };
 
 // Set the maximum number of buttons allowed
@@ -96,6 +108,13 @@ function shop(btn){
                 case 'wizardry':
                     break;
                 case 'necromancy':
+                    if (buttonPoints >= 100){
+                        typesOfButtons['skeleton'] = 0.05;
+                        typesOfButtons['ghost'] = 0.05;
+                        typesOfButtons['vampire'] = 0.025;
+                        setShopButton(1, '<i>empty</i>');
+                        clearButtons();
+                    }
                     break;
             }
         break;
@@ -159,6 +178,16 @@ function changeButton() {
         case 'unicorn':
             makeUnicornButton();
             break;
+        case 'skeleton':
+            makeSkeletonButton();
+            break;
+        case 'ghost':
+            makeGhostButton();
+            break;
+        case 'vampire':
+            makeVampireButton();
+            break;
+        
     }
 
 }
@@ -239,6 +268,76 @@ function makeButton() {
     main.appendChild(button);
     writeToScreen('You made another button appear!');
     countButtonPoints();
+}
+
+function makeVampireButton(){
+    let main = document.querySelector('main');
+    let button = document.createElement('button');
+    button.textContent = 'Vampire Button 🧛';
+    button.onclick = skeletonAction;
+    main.appendChild(button);
+    writeToScreen('A vampire button apparates from the darkness!');
+    countButtonPoints();            
+}
+
+function vampireAction(){
+    if (allButtons['wizard'] > 0){
+        removeButton('wizard');
+        makeVampireButton();
+        writeToScreen('A vampire button bites a wizard button creating another vampire button!');
+    } else if (allButtons['vampire'] >= 2){
+        removeButton('vampire');
+        writeToScreen('Two vampire buttons fight and kill each other.');
+    } else if (buttons.length == 1) {
+        changeButton();
+    } else {
+        makeZombieButton();
+        makeZombieButton();
+        makeZombieButton();
+        writeToScreen('A vampire button summons three zombie buttons.');
+    }
+}
+
+function makeGhostButton(){
+    let main = document.querySelector('main');
+    let button = document.createElement('button');
+    button.textContent = 'Ghost Button 👻';
+    button.onclick = ghostAction;
+    main.appendChild(button);
+    writeToScreen('A ghost button appears from thin air!');
+    countButtonPoints();        
+}
+
+function ghostAction(){
+    if (buttons.length != allButtons['ghost']){
+        makeGhostButton();
+        makeGhostButton();
+        writeToScreen('It appears a ghost button party is taking place!');
+    } else if (buttons.length > 1) {
+        removeButton('ghost');
+        writeToScreen('One ghost button scares another into leaving.');
+    } else {
+        changeButton();
+    }
+}
+
+function makeSkeletonButton(){
+    let main = document.querySelector('main');
+    let button = document.createElement('button');
+    button.textContent = 'Skeleton Button 🩻';
+    button.onclick = skeletonAction;
+    main.appendChild(button);
+    writeToScreen('A skeleton button rises from the dead!');
+    countButtonPoints();    
+}
+
+function skeletonAction(){
+    if (allButtons['dragon'] > 0){
+        removeButton('dragon');
+        writeToScreen('A skeleton button slayed a dragon button!');
+    } else {
+        changeButton();
+    }
 }
 
 // Function to create a unicorn button
