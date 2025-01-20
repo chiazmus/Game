@@ -88,8 +88,8 @@ function shop(btn){
                         upgradePath = 'necromancy';
                         buttonTypePoints['zombie'] += 4;
                         typesOfButtons['zombie'] = 0.1
-                        setShopButton(1, '<i>Contagious Zombie Buttons<br>100</i>');
-                        setShopButton(2, '<img src="assets/images/dark-magic.webp" alt="dark-magic"><br><i>Dark Magic<br>100</i>');
+                        setShopButton(1, '<img src="assets/images/necromantic-portal.jpeg" alt="dark-magic"><i>Necromantic Rift<br>100</i>');
+                        setShopButton(2, '<img src="assets/images/dark-magic.jpeg" alt="dark-magic"><br><i>Dark Magic<br>100</i>');
                         clearButtons();
                     }
                     break;
@@ -105,8 +105,8 @@ function shop(btn){
                     if (buttonPoints >= 50){
                         upgradePath = 'wizardry';
                         buttonTypePoints['wizard'] += 5;
-                        setShopButton(1, '<i>Button Apothecary<br>100</i>');
-                        setShopButton(2, '<i>Button Artificers<br>100</i>');
+                        setShopButton(1, '<img src="assets/images/button-apothecary.jpeg" alt="button-apothecary"><i>Button Apothecary<br>100</i>');
+                        setShopButton(2, '<img src="assets/images/button-artificers.jpeg" alt="button-artificers"><i>Button Artificers<br>100</i>');
                         clearButtons();
                     }
                     break;

@@ -6,7 +6,8 @@ body {
 
 .container {
     display: flex;
-    height: 75%;
+    height: auto;
+    min-height: 75%;
 }
 .sidebar {
     max-width: 100px; /* Adjust sidebar width as needed */
