@@ -72,6 +72,8 @@ var allButtons = {
     'vampire':0
 };
 
+const audio = document.getElementById('buttonSong');
+const musicButton = document.getElementById('playMusic');
 // Set the maximum number of buttons allowed
 let maxButtons = 36;
 let zombies = false;
@@ -81,6 +83,16 @@ let zombieEdible = ['normal','wizard','ninja'];
 let zombieCooperation = false;
 
 //Shop Code
+function playMusic(){
+    if (audio.paused){
+        audio.play();
+        musicButton.textContent = 'Pause';
+    } else {
+        audio.pause();
+        musicButton.textContent = 'Play';
+    }
+}
+
 function shop(btn){
     switch (btn){
         case 1:
