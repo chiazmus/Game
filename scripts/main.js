@@ -1,15 +1,5 @@
 // New Buttons to implement later:
 //
-// --Vampire--
-// Vampire button, which spawns when a wizard button is infected by a zombie button.
-// When clicked, it tries to create three more zombie buttons.
-// When a Vampire button is present, a wizard button will create 3 normal buttons if clicked, killing the vampire button.
-// It will starve if there are no normal buttons left.
-// It is worth 5 points.
-//
-// --Unicorn--
-// A Unicorn button is the rarest one, and when clicked will disappear. It is worth 50 points.
-//
 // --Kraken--
 // Kraken button, which spawns when a dragon button is infected by a zombie button. It will eat up to 3 random buttons when clicked
 // and will attack other Krakens if there are no other button types left.
@@ -274,13 +264,15 @@ function makeVampireButton(){
     let main = document.querySelector('main');
     let button = document.createElement('button');
     button.textContent = 'Vampire Button 🧛';
-    button.onclick = skeletonAction;
+    button.onclick = vampireAction;
     main.appendChild(button);
     writeToScreen('A vampire button apparates from the darkness!');
     countButtonPoints();            
 }
 
 function vampireAction(){
+    let main = document.querySelector('main');
+    let buttons = main.querySelectorAll('button');
     if (allButtons['wizard'] > 0){
         removeButton('wizard');
         makeVampireButton();
@@ -296,6 +288,7 @@ function vampireAction(){
         makeZombieButton();
         writeToScreen('A vampire button summons three zombie buttons.');
     }
+    countButtonPoints();
 }
 
 function makeGhostButton(){
@@ -309,6 +302,8 @@ function makeGhostButton(){
 }
 
 function ghostAction(){
+    let main = document.querySelector('main');
+    let buttons = main.querySelectorAll('button');
     if (buttons.length != allButtons['ghost']){
         makeGhostButton();
         makeGhostButton();
@@ -319,6 +314,7 @@ function ghostAction(){
     } else {
         changeButton();
     }
+    countButtonPoints();
 }
 
 function makeSkeletonButton(){
@@ -338,6 +334,7 @@ function skeletonAction(){
     } else {
         changeButton();
     }
+    countButtonPoints();
 }
 
 // Function to create a unicorn button
