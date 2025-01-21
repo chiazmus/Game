@@ -30,6 +30,7 @@
             <h3 style="padding: 5px; margin: 5px; border-top: 1px solid black; border-bottom: 1px solid black;">Music</h3>
             <audio id="buttonSong" src="assets/music/the-button-song.mp3" loop></audio>
             <button id="playMusic" onclick="playMusic()" style="padding: 2px; margin: 1px; border-radius: 2; font-size: medium;">Play</button>
+            <input type="range" min="0" max="100" style="width: 5rem;" id="musicVolume" oninput="changeVolume()">
         </aside>
     </div>
     <script src="scripts/main.js"></script>

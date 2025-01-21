@@ -74,6 +74,7 @@ var allButtons = {
 
 const audio = document.getElementById('buttonSong');
 const musicButton = document.getElementById('playMusic');
+const volumeSlider = document.getElementById('musicVolume');
 // Set the maximum number of buttons allowed
 let maxButtons = 36;
 let zombies = false;
@@ -91,6 +92,10 @@ function playMusic(){
         audio.pause();
         musicButton.textContent = 'Play';
     }
+}
+
+function changeVolume(){
+    audio.volume = volumeSlider.value*0.01;
 }
 
 function shop(btn){
