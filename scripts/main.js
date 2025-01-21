@@ -106,7 +106,10 @@ function shop(btn){
                     if (buttonPoints >= 50){
                         upgradePath = 'necromancy';
                         buttonTypePoints['zombie'] += 4;
-                        typesOfButtons['zombie'] = 0.1
+                        typesOfButtons['zombie'] = 0.1;
+                        document.documentElement.style.setProperty('--background-color','#161B22')
+                        document.documentElement.style.setProperty('--accent-color','darkslategray')
+                        document.documentElement.style.setProperty('--color','white')
                         setShopButton(1, '<img src="assets/images/necromantic-portal.jpeg" alt="dark-magic"><i>Necromantic Rift<br>100</i>');
                         setShopButton(2, '<img src="assets/images/dark-magic.jpeg" alt="dark-magic"><br><i>Dark Magic<br>100</i>');
                         clearButtons();
@@ -119,7 +122,7 @@ function shop(btn){
                         typesOfButtons['skeleton'] = 0.05;
                         typesOfButtons['ghost'] = 0.05;
                         typesOfButtons['vampire'] = 0.025;
-                        setShopButton(1, '<i>empty</i>');
+                        setShopButton(1, '<i>empty<i>');
                         clearButtons();
                     }
                     break;
