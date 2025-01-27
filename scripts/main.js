@@ -72,6 +72,8 @@ var allButtons = {
     'vampire':0
 };
 
+var tick = 0;
+
 const audio = document.getElementById('buttonSong');
 const musicButton = document.getElementById('playMusic');
 const volumeSlider = document.getElementById('musicVolume');
@@ -82,6 +84,8 @@ let upgradePath = 'none';
 let buttonPoints = 0;
 let zombieEdible = ['normal','wizard','ninja'];
 let zombieCooperation = false;
+
+setInterval(()=>{tick++;displayPoints();},100);
 
 //Shop Code
 function playMusic(){
@@ -104,6 +108,7 @@ function shop(btn){
             switch (upgradePath){
                 case 'none':
                     if (buttonPoints >= 50){
+                        buttonPoints-=50;
                         upgradePath = 'necromancy';
                         buttonTypePoints['zombie'] += 4;
                         typesOfButtons['zombie'] = 0.1;
@@ -119,6 +124,7 @@ function shop(btn){
                     break;
                 case 'necromancy':
                     if (buttonPoints >= 100){
+                        buttonPoints-=100;
                         typesOfButtons['skeleton'] = 0.05;
                         typesOfButtons['ghost'] = 0.05;
                         typesOfButtons['vampire'] = 0.025;
@@ -132,6 +138,7 @@ function shop(btn){
             switch (upgradePath){
                 case 'none':
                     if (buttonPoints >= 50){
+                        buttonPoints-=50;
                         upgradePath = 'wizardry';
                         buttonTypePoints['wizard'] += 5;
                         setShopButton(1, '<img src="assets/images/button-apothecary.jpeg" alt="button-apothecary"><i>Button Apothecary<br>100</i>');
@@ -246,10 +253,23 @@ function countButtonPoints() {
     }
 
     // Update the displayed points
-    let headerHeader = document.querySelector('h2');
-    headerHeader.textContent = 'You have ' + points + ' button points.';
-    buttonPoints = points;
     checkButtonPopulation();
+    return Math.max(points*0.05,1);
+}
+
+function displayPoints(){
+    let textPoints = ''
+    buttonPoints += countButtonPoints()*0.1;
+    textPoints = Math.floor(buttonPoints)
+    if (buttonPoints > 10000){
+        textPoints = Math.floor(buttonPoints/100)/10 + 'k';
+    } 
+    if (buttonPoints > 1000000){
+        textPoints = Math.floor((buttonPoints/100000))/10 + 'm';
+    }
+
+    let headerHeader = document.querySelector('h2');
+    headerHeader.textContent = 'You have ' + textPoints + ' button points.';
 }
 
 function removeButton(type){
