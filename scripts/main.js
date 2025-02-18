@@ -56,8 +56,8 @@ const buttonTypePoints = {
     'ninja': 9,
     'unicorn': 20,
     'skeleton':7,
-    'ghost':3,
-    'vampire':9
+    'ghost':10,
+    'vampire':15
 };
 
 var allButtons = {
@@ -141,6 +141,7 @@ function shop(btn){
                         buttonPoints-=50;
                         upgradePath = 'wizardry';
                         buttonTypePoints['wizard'] += 5;
+                        buttonTypePoints['dragon'] += 5;
                         setShopButton(1, '<img src="assets/images/button-apothecary.jpeg" alt="button-apothecary"><i>Button Apothecary<br>100</i>');
                         setShopButton(2, '<img src="assets/images/button-artificers.jpeg" alt="button-artificers"><i>Button Artificers<br>100</i>');
                         clearButtons();
